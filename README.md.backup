@@ -99,6 +99,4 @@ The \<from where> portion is constant that tells the command how to act
 *  SEEK_CUR - From the current location of the file pointer
 *  SEEK_END - From the end of the file
 
-This command in conjunction with others allow you to structure your files and retrieve things algorithmically  
-
-* File Structures 
+This command in conjunction with others allow yo
