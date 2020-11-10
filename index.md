@@ -1,37 +1,104 @@
-## Welcome to GitHub Pages
+# Learning to Code C++ Part 4
 
-You can use the [editor on GitHub](https://github.com/Markay12/LearnCppPart4/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+## *Table of Contents*
+**Storage and Linked Data**  
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+1.  Types of Memory  
+	* Speed
+	* Buffering/Memory Flow
+2. Workflow  
+3. fread and fwrite
+4. 
 
-### Markdown
+---
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Types of Memory
 
-```markdown
-Syntax highlighted code block
+### Hard Drive
+The hard drive is much slower to read than RAM  
+Reading and writing to the hard drive is inevitable  
 
-# Header 1
-## Header 2
-### Header 3
+* File IO  
+* Data Bases  
 
-- Bulleted
-- List
+Whenever we hit the hard drive the Program is going to slow down  
+* Even some modern SSD's are quite slow
 
-1. Numbered
-2. List
+### Speed?
+So can we speed this up?  
+We know RAM is quicker  
 
-**Bold** and _Italic_ and `Code` text
+* We can exploit RAM to make the hard drive operations quicker
 
-[Link](url) and ![Image](src)
-```
+This is where **buffering** comes in
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+### Buffering
+This is used to make reading and writing to the HD a lot quicker  
+Certain languages such as Java do this for us under the correct circumstances  
 
-### Jekyll Themes
+* BufferedInputSteam / outputStream
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Markay12/LearnCppPart4/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+The idea here is that we are going to create a buffer in RAM that holds information from the hard disk  
+That buffer will be our "middle manager" allowing us to limit how much we use the drive  
 
-### Support or Contact
+When we want to use the drive we will read larger chunks of data in one operation into an Array in RAM  
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+
+## Workflow
+The workflow for the algorithms is the same  
+Writing:  
+* Create the buffer  
+
+	* Fill it with information  
+* When the buffer is full, write the information to the disk  
+
+
+* Empty the buffer and start again
+
+Reading:  
+
+* Create the buffer  
+* Read a chunk of file
+* Process through it
+* Get more from the file
+
+## fread and fwrite
+These two are found in #include\<stdio.h>  
+They are how we work with binary byte data in C/C++ file I/O  
+Like fscanf/fprintf we need a file pointer to work with here  
+`<bytes read> = fread(<buffer>, sizeof(<buffer>), <# of items to read of 2nd param>, <file pointer>);`
+
+`char buffer[100];`  
+`File *filepointer;`  
+`int bytes = fread(buffer, sizeof(buffer), 1, fp);`
+
+### Syntax Differences
+
+
+A buffer s loaded with bytes of that information  
+The second parameter indicated the size of the things stores in the byte array memory  
+The third parameter indicates how many of those things should be read or written  
+
+This means that you can load up that byte array with binary patterns of data and read/write it into our records  
+
+* Great for outputting whole records, compressed data, encrypted data and serialization
+
+
+
+## fseek
+This allows us to manipulate the file pointer directly  
+
+* Allows for movement of the file pointer in the file itself
+
+Syntax:   
+`fseek (<file pointer>, <bytes to move>, <from where?>);`  
+
+The \<from where> portion is constant that tells the command how to act
+
+*  SEEK_SET - From the beginning of the file  
+*  SEEK_CUR - From the current location of the file pointer
+*  SEEK_END - From the end of the file
+
+This command in conjunction with others allow you to structure your files and retrieve things algorithmically  
+
+* File Structures 
